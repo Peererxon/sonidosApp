@@ -3,12 +3,41 @@
     <ion-title>
       Ionic Blank
     </ion-title>
+    <button ion-button (click)="ordenar()"></button>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+	<ion-refresher [enabled]="!ordenando" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+	<ion-list [reorder]="ordenando">
+		<ion-item-sliding *ngFor="let animal of animales; let i = index">
+			<ion-item>
+
+				<ion-thumbnail item-start>
+					<img src={{animal.imagen}}>
+				</ion-thumbnail>
+
+				<h2>{{animal.nombre}}</h2>
+
+				<ion-icon *ngIf=" animal.reproduciendo" item-right name="pause" (click)="reproducir(animal)"></ion-icon>
+				<ion-icon *ngIf="!animal.reproduciendo" item-right name="play" (click)="reproducir(animal)"></ion-icon>
+
+			</ion-item>
+
+		 	<ion-item-options side="left">
+		      <button ion-button color="danger" (click)="eliminarAnimal(i)">
+		        <ion-icon name="trash"></ion-icon>
+		        Eliminar
+		      </button>
+		    </ion-item-options>
+		</ion-item-sliding>
+	
+	</ion-list>
 </ion-content>
